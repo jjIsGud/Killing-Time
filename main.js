@@ -15,7 +15,7 @@ let config = {
         arcade: {
             debug: false,
             fps: 60,
-            gravity: { y: 0 }
+            gravity: { y: 50 }
         }
     },
     scene: [ 
