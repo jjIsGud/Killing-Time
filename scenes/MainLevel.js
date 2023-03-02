@@ -1,36 +1,47 @@
+import { Enemy } from '../objects/Enemy.js'
+import { Tower } from '../objects/Tower.js'
+import { BulletGroup } from '../objects/Bullet.js'
 export class MainLevel extends Phaser.Scene {
-  constructor() {
-    super({ key: "main-level" });
-  }
+	constructor() {
+		super({ key: "main-level" });
+	}
+	preload() {
+		console.log("loading MainLevel");
 
-  preload() {
-    console.log("loading MainLevel");
-  }
+	}
 
-  create() {
-    // this runs once when the scene is created
-    // initialize variables and create object here
+	create() {
+		this.nextEnemy = 5000
+		this.path = new Phaser.Curves.Path(700, 110)
+		this.path.lineTo(100, 110)
+		this.enemies = []
+		this.bullets = new BulletGroup(this)
+		console.log(this.bullets)
 
-    // create colliders after all objects exist
-    this.createColliders();
-  }
+		this.e = new Enemy(this, 700, 110)
+		new Tower(this, 50, 110)
 
-  update(timestamp, delta) {
-    // this runs every frame
-    // delta can be used to determine the number of milliseconds since the last update
-  }
+		this.e.setEnemyPath(this.path)
+		this.enemies.push(this.e)
+		this.createColliders();
+		//this.enemies.push(new Enemy(this, 0, 0).play('ber'))
+		if
+		this.physics.add.collider(this.bullets, this.enemies, (b, e) => { b.destroy() })
+	}
 
-  
-  createColliders() {
-    // one per colliding pair
-    // this.physics.add.collider(
-    //   this.group1,
-    //   this.group2,
-    //   this.functionToHandleCollision,  // expects item from group1 and group2 that collided
-    //   null,
-    //   this
-    // );
-		//maddox is not gay
+	update(timestamp, delta) {
+		this.nextEnemy -= delta;
+		if (this.nextEnemy < 0) {
+			const e = new Enemy(this, 700, 110);
+			e.setEnemyPath(this.path)
+			this.enemies.push(e)
+			this.nextEnemy = 5000;
 
-  }
+		}
+	}
+
+
+	createColliders() {
+
+	}
 }
